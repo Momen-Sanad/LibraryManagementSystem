@@ -1,0 +1,35 @@
+name: Component Build Workflow
+
+on:
+  push:
+    branches:
+      - backend
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: Run backend tests
+        run: |
+          pytest --maxfail=1 --disable-warnings -q
+      - name: Build backend (if applicable)
+        run: |
+          RUN python -m venv /app/venv
+          ENV PATH="/app/venv/bin:$PATH"
+
+          COPY requirements.txt .
+          RUN pip install --no-cache-dir -r requirements.txt
+
+          COPY . .
+
+          EXPOSE 5000
+
+          CMD ["python", "-m", "flask", "run", "--host=0.0.0.0", "--port=5000"]
