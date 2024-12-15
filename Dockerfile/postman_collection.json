@@ -1,0 +1,113 @@
+{
+    "info": {
+      "name": "Library Management API",
+      "description": "API for managing a library's books, supporting CRUD operations and search.",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Add a New Book",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"title\": \"Book Title\",\n  \"author\": \"Author Name\",\n  \"published_year\": 2023,\n  \"isbn\": \"1234567890123\",\n  \"genre\": \"Fiction\"\n}"
+          },
+          "url": {
+            "raw": "{{base_url}}/api/books",
+            "host": ["{{base_url}}"],
+            "path": ["books"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "List All Books",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "{{base_url}}/api/books",
+            "host": ["{{base_url}}"],
+            "path": ["books"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Search Books",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "{{base_url}}/api/books/search?author=Author+Name&published_year=2023&genre=Fiction",
+            "host": ["{{base_url}}"],
+            "path": ["books", "search"],
+            "query": [
+              {
+                "key": "author",
+                "value": "Author Name"
+              },
+              {
+                "key": "published_year",
+                "value": "2023"
+              },
+              {
+                "key": "genre",
+                "value": "Fiction"
+              }
+            ]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Delete Book by ISBN",
+        "request": {
+          "method": "DELETE",
+          "header": [],
+          "url": {
+            "raw": "{{base_url}}/api/books/1234567890123",
+            "host": ["{{base_url}}"],
+            "path": ["books", "1234567890123"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Update Book Details",
+        "request": {
+          "method": "PUT",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"title\": \"Updated Book Title\",\n  \"author\": \"Updated Author Name\",\n  \"published_year\": 2024,\n  \"genre\": \"Non-Fiction\"\n}"
+          },
+          "url": {
+            "raw": "{{base_url}}/api/books/1234567890123",
+            "host": ["{{base_url}}"],
+            "path": ["books", "1234567890123"]
+          }
+        },
+        "response": []
+      }
+    ],
+    "variable": [
+      {
+        "key": "base_url",
+        "value": "http://localhost:5000",
+        "type": "string"
+      }
+    ]
+  }  

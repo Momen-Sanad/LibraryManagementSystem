@@ -1,0 +1,25 @@
+FROM archlinux:latest
+
+WORKDIR /app
+
+# Install Python and pip
+RUN pacman -Sy --noconfirm python python-pip && \
+    pacman -Scc --noconfirm && \
+    rm -rf /var/cache/pacman/pkg/*
+
+# Create a virtual environment and activate it
+RUN python -m venv /app/venv
+ENV PATH="/app/venv/bin:$PATH"
+
+# Copy requirements and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code
+COPY . .
+
+# Expose the Flask port
+EXPOSE 5000
+
+# Command to run the Flask app
+CMD ["python", "-m", "flask", "run", "--host=0.0.0.0", "--port=5000"]

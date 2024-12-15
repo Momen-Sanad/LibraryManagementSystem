@@ -1,0 +1,26 @@
+# Use the official Windows Server Core base image with Python
+FROM mcr.microsoft.com/windows/servercore:ltsc2022
+
+# Set the working directory
+WORKDIR /app
+
+# Install Python and pip if not already installed
+RUN powershell -Command \
+    "if (!(Get-Command python -ErrorAction SilentlyContinue)) { \
+        Invoke-WebRequest -Uri https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe -OutFile python-installer.exe; \
+        Start-Process -FilePath python-installer.exe -ArgumentList '/quiet InstallAllUsers=1 PrependPath=1' -Wait; \
+        Remove-Item python-installer.exe; \
+    }"
+
+# Copy the requirements file and install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code
+COPY . .
+
+# Expose the default Flask port
+EXPOSE 5000
+
+# Command to run the Flask application
+CMD ["python", "-m", "flask", "run", "--host=0.0.0.0"]
